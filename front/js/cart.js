@@ -152,7 +152,11 @@ fetch("http://localhost:3000/api/products/order", {
     body: JSON.stringify(body)
   })
   .then((res) => res.json())
-  .then((data) => console.log(data))
+  .then((data) => {
+    console.log(data);
+    window.location.href = "confirmation.html" + "?orderId=" + data.orderId
+    return 
+  })
 }
 
 function isFormInvalid() {
@@ -160,7 +164,7 @@ function isFormInvalid() {
   const inputs = form.querySelectorAll("input")
   inputs.forEach((input) => {
     if (input.value === "") {
-      alert("Veuillez renseigner ce champ")
+      alert("Veuillez renseigner vos coordonnées")
       return true
     }
     return false

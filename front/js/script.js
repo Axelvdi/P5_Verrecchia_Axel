@@ -1,8 +1,9 @@
+// je fais appel à l'api products
 fetch ("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then((data) => addProducts(data))
 
-
+// je construis et définis le DOM grâce à la boucle
 function addProducts(data) {
     data.forEach(element => {
         let items = document.getElementById('items');
