@@ -35,24 +35,20 @@ for (product of cart) {
 
   // Récupération des Id de chaque articles et envoi dans le tableau de la variable products[]
   products.push(product._id);
-  console.log(products);
 }
-console.log(products);
-let sup = document.querySelectorAll(".deleteItem");
-console.log(sup)
+let itemDelete = document.querySelectorAll(".deleteItem");
 
-for( let i = 0; i < sup.length; i++){
-  sup[i].addEventListener("click" , (event) =>{
+// suppression des articles
+for( let i = 0; i < itemDelete.length; i++){
+  itemDelete[i].addEventListener("click" , (event) =>{
     event.preventDefault();
     
     let idSuppression = cart[i]
     console.log(idSuppression);
 
     cart.splice( i,1 );
-    console.log(cart);
   
     localStorage.setItem("cart", JSON.stringify(cart));
-     console.log(products);
   })
 }
 
@@ -60,23 +56,18 @@ for( let i = 0; i < sup.length; i++){
 let addPriceFunction = () => {
   console.log(cart);
   let found = cart.map((element) => element.totalPrice);
-  console.log(found);
 
   const reducer = (previousValue, currentValue) => previousValue + currentValue;
   let somme = found.reduce(reducer);
-  console.log(somme);
   return somme;
 };
 
 // Fonction récupération des quantités des articles et quantité totale
 let addQuantFunction = () => {
-  console.log(cart);
   let found2 = cart.map((element) => element.quantity);
-  console.log(found2);
 
   const reducer = (previousValue, currentValue) => previousValue + currentValue;
   let quant = found2.reduce(reducer);
-  console.log(quant);
   return quant;
 };
 
@@ -104,7 +95,6 @@ function injectSommeQuant() {
 }
 injectSommeQuant();
 
-console.log(cart);
 let itemQuantity = Array.from(document.querySelectorAll(".itemQuantity"));
 let sousTotal = Array.from(document.querySelectorAll("#sousTotal"));
 let screenQuantity = Array.from(document.querySelectorAll("#quantité"));
@@ -113,7 +103,6 @@ itemQuantity.forEach(function (quantity, i) {
   quantity.addEventListener("change", (event) => {
     event.preventDefault();
     let newArticlePrice = quantity.value * cart[i].price;
-    console.log(quantity.value);
 
     screenQuantity[i].textContent = "Qté: " + quantity.value;
     cart[i].quantity = parseInt(quantity.value, 10);
@@ -121,8 +110,6 @@ itemQuantity.forEach(function (quantity, i) {
     sousTotal[i].textContent =
       "Prix total pour cet article: " + newArticlePrice + " €";
       cart[i].totalPrice = newArticlePrice;
-
-    console.log(`le prix de ${cart[i].name} et passé à ${newArticlePrice}`);
 
     injectSommeQuant();
   });
@@ -134,11 +121,8 @@ orderButton.addEventListener("click", (e) => getform(e));
 
 function getform(e) {
 e.preventDefault()
-if (cart.length === 0) {
-  alert("Please select items to buy")
-  return
-}
 
+// function pour créer des regex et les messages d'erreurs
 if (isFormInvalid()) return
 if (isEmailInvalid()) return
 
@@ -181,7 +165,7 @@ function isEmailInvalid() {
   return false
 }
 
-
+// création d'un tableau afin de récuperer les données de l'utilisateur
 function makeBody() {
   let _id = [];
         for (let i = 0; i<cart.length;i++) {

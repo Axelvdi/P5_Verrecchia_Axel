@@ -1,8 +1,10 @@
+// je récupère l'id du produit dans l'url
 const getProductId = () => {
   return new URL(location.href).searchParams.get("id");
 };
 const productId = getProductId();
 
+// je fais appel à l'api avec l'id du produit 
 fetch(`http://localhost:3000/api/products/${productId}`)
   .then((response) => {
     return response.json();
@@ -22,9 +24,8 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 
   const button = document.querySelector("#addToCart");
 
-
+// Création et définition des éléments du DOM
 let addProduct = (data) => {
-  console.log(data);
   let img = document.createElement("img");
   img.src = data.imageUrl;
   img.alt = data.altTxt;
@@ -34,6 +35,7 @@ let addProduct = (data) => {
   let price = document.querySelector("#price").innerHTML = data.price;
   document.querySelector("#description").innerHTML = data.description;
 
+  // Boucle intégrant les différentes couleurs du produit dans le HTML
   for (color of data.colors) {
     let option = document.createElement("option");
     option.innerHTML = `${color}`;
@@ -43,7 +45,7 @@ let addProduct = (data) => {
 };
 
 
-
+// Fonction qui enregistre dans un objet les options de l'utilisateur au click sur le bouton ajouter au panier
 let registredProduct = (product) => {
 
   button.addEventListener("click", (event) => {
@@ -68,38 +70,33 @@ let registredProduct = (product) => {
         price: product.price,
         totalPrice: product.price * parseInt(selectedQuantity.value, 10),
       };
-      console.log(data);
+    
 
       //Récupération des données du Local Storage
       let existingCart = JSON.parse(localStorage.getItem("cart"));
 
       // Si le Local Storage existe
       if (existingCart) {
-        console.log("Il y a déjà un produit dans le panier, on compare les données");
         // On recherche avec la méthode find() si l'id et la couleur d'un article sont déjà présents
-        let item = existingCart.find(
-          (item) =>
+        let item = existingCart.find((item) =>
             item.id == data._id && item.color == data.color
         );
-        // Si oui, on incrémente la nouvelle quantité et la mise à jour du prix total de l'article
+        // on incrémente la nouvelle quantité et la mise à jour du prix total de l'article
         if (item) {
           item.quantity = item.quantity + data.quantity;
           item.totalPrice += item.price * data.quantity;
           localStorage.setItem("cart", JSON.stringify(existingCart));
-          console.log("Quantité supplémentaire dans le panier.");
           return;
         }
         // Si non, alors on push le nouvel article sélectionné
         existingCart.push(data);
         localStorage.setItem("cart", JSON.stringify(existingCart));
-        console.log("Le produit a été ajouté au panier");
 
       } else {
         //  Sinon création d'un tableau dans le lequel on push l'objet "selectedProduct"
         let createLocalStorage = [];
         createLocalStorage.push(data);
         localStorage.setItem("cart", JSON.stringify(createLocalStorage));
-        console.log("Le panier est vide, on ajoute le premier produit");
       }
     }
   });
