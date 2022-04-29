@@ -61,16 +61,10 @@ let registredProduct = (product) => {
       // Récupération des informations du produit sélectionné
       let data = {
         _id: product._id,
-        name: product.name,
-        img: product.imageUrl,
-        altTxt: product.altTxt,
-        description: product.description,
         color: selectedColor.value,
         quantity: parseInt(selectedQuantity.value, 10),
-        price: product.price,
-        totalPrice: product.price * parseInt(selectedQuantity.value, 10),
       };
-    
+      console.log(data);
 
       //Récupération des données du Local Storage
       let existingCart = JSON.parse(localStorage.getItem("cart"));
@@ -79,8 +73,10 @@ let registredProduct = (product) => {
       if (existingCart) {
         // On recherche avec la méthode find() si l'id et la couleur d'un article sont déjà présents
         let item = existingCart.find((item) =>
-            item.id == data._id && item.color == data.color
+            item._id == data._id && item.color == data.color
         );
+        console.log(existingCart);
+        console.log(item);
         // on incrémente la nouvelle quantité et la mise à jour du prix total de l'article
         if (item) {
           item.quantity = item.quantity + data.quantity;
@@ -93,7 +89,7 @@ let registredProduct = (product) => {
         localStorage.setItem("cart", JSON.stringify(existingCart));
 
       } else {
-        //  Sinon création d'un tableau dans le lequel on push l'objet "selectedProduct"
+        //  Sinon création d'un tableau dans le lequel on push l'objet "addProduct"
         let createLocalStorage = [];
         createLocalStorage.push(data);
         localStorage.setItem("cart", JSON.stringify(createLocalStorage));

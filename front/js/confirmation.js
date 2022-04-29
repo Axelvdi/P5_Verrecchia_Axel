@@ -6,4 +6,4 @@ const getorderId = () => {
   const idNode = document.getElementById("orderId");
   idNode.innerText = orderId;
 
-  localStorage.removeItem("cart")
+  localStorage.removeItem("cart");
